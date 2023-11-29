@@ -1,7 +1,7 @@
 from collections import defaultdict
 
-class Hamiltonian_Graph:
-
+class Hamilton_Graph:
+    result = []
     def __init__(self, vertices):
         self.V = vertices
         self.graph = defaultdict(list)
@@ -45,22 +45,24 @@ class Hamiltonian_Graph:
         for vertex in range(self.V):
             path = [vertex]
             if self.isHamiltonian(path, vertex):
-                return "Graph has a Hamiltonian path", path
-        return "Graph does not have a Hamiltonian path", None
+                return path
+        return None
 
     def test(self):
-        status, path = self.hamiltonianPath()
-        print(status)
+        path = self.hamiltonianPath()
         if path:
             mapped_path = [self.index_mapping[vertex] for vertex in path]
-            print("Hamiltonian Path:", ' -> '.join(map(str, mapped_path)))
+            # print("Hamiltonian Path:", ' -> '.join(map(str, mapped_path)))
+            for vertex in path:
+                self.result.append(self.index_mapping[vertex])
 
 
 # Test case
-# g1 = Graph(4)
+# g1 = Hamilton_Graph(4)
 # g1.addEdge('e', 'f')
 # g1.addEdge('f', 'g')
 # g1.addEdge('g', 'h')
 # g1.addEdge('h', 'f')
 # g1.addEdge('h', 'e')
 # g1.test()
+# print(g1.result)

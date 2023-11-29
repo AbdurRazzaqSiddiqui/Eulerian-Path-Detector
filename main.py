@@ -1,8 +1,9 @@
 import pygame
 import sys
-import timeit
+import time
 from pygame.locals import *
 from eulerian import Euler_Graph
+from hamiltonian import Hamilton_Graph
 
 width, height = 960, 720
 bg_img = pygame.image.load('image.jpg')
@@ -153,7 +154,9 @@ def open_main_window(algorithm_no):
     edge_line = []
     edge_opt = False
     euler_opt = False
+    hamiton_opt = False
     euler_path = []
+    hamilton_path = []
 
     # Rectangles to define the button areas
     reset_button_rect = pygame.Rect(width - button_width - button_margin, button_margin, button_width, button_height)
@@ -170,9 +173,6 @@ def open_main_window(algorithm_no):
 
     # Function to find the convex hull
     def find_paths():
-        nonlocal resultant_path
-        global exec_time
-        s = timeit.default_timer()
         if algorithm_no == 1:
             global eulerian_path_graph
             vertices = []
@@ -198,8 +198,30 @@ def open_main_window(algorithm_no):
             euler_opt = True
 
         elif algorithm_no == 2:
-            resultant_path = resultant_path_Hamiltonian([point for point in points if not is_point_in_button(point)])
-
+            global hamiltonian_path_graph
+            vertices = []
+            hamiltonian_path_graph = Hamilton_Graph(len(points))
+            for edge in all_edges:
+                for point in points_dict:
+                    if edge[0] == point['point']:
+                        vertices.append(point['vertex'])
+                        break
+                for point in points_dict:
+                    if edge[1] == point['point']:
+                        vertices.append(point['vertex'])
+                        break
+                option = True
+                for hamilton_vertex in hamilton_path:
+                    if hamilton_vertex['u'] == vertices[0] and hamilton_vertex['v'] == vertices[1]:
+                        option = False
+                if option:
+                    hamiltonian_path_graph.addEdge(vertices[0],vertices[1])
+                    hamilton_path.append({'u':vertices[0],'v':vertices[1]})
+                vertices.clear()
+            hamiltonian_path_graph.test()
+            # print(f'Path {hamiltonian_path_graph.path}')
+            # print(f'Path {hamilton_path}')
+            hamilton_opt = True
     # Function to reset points and clear the convex hull
     def reset_points():
         nonlocal resultant_path
@@ -212,7 +234,9 @@ def open_main_window(algorithm_no):
         all_edges.clear()
         screen.blit(bg_img,(0,0))
         euler_opt = False
+        hamilton_opt = False
         euler_path.clear()
+        hamilton_path.clear()
 
     # Function to check if a point is inside a button, excluding the "Find Complexity" button
     def is_point_in_button(point):
@@ -330,15 +354,27 @@ def open_main_window(algorithm_no):
         # Draw Euler Path
         if euler_path:
             euler_line = []
-            for edge in euler_path:
+            for edge in eulerian_path_graph.path:
                 for point in points_dict:
-                    if point['vertex'] == edge['u']:
+                    if point['vertex'] == edge[0]:
                         euler_line.append(point['point'])
                 for point in points_dict:
-                    if point['vertex'] == edge['v']:
+                    if point['vertex'] == edge[1]:
                         euler_line.append(point['point'])
-                pygame.draw.lines(screen, line_color, True, (euler_line[0],euler_line[1]), 5)
+                pygame.draw.lines(screen, (250,0,0), True, (euler_line[0],euler_line[1]), 5)
                 euler_line.clear()
+
+        if hamilton_path:
+            hamilton_line = []
+            for i in range(len(hamiltonian_path_graph.result)):
+                for point in points_dict:
+                    if point['vertex'] == hamiltonian_path_graph.result[i]:
+                        hamilton_line.append(point['point'])
+            
+            for i in range(len(hamilton_line)):
+                print(i,len(hamilton_line))
+                if i != (len(hamilton_line)-1):
+                    pygame.draw.lines(screen, (250,0,0), True, (hamilton_line[i],hamilton_line[i+1]), 5)
 
         # Draw points and coordinates
         for point,caption in zip(points,points_dict):
