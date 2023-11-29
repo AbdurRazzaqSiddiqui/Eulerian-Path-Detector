@@ -117,7 +117,7 @@ def about():
         font = pygame.font.Font(None, 20)
 
         # Create text captions
-        caption1 = font.render("K213000 Muneeb Ahmed", True, heading_color)
+        caption1 = font.render("K213330 Muneeb Ahmed", True, heading_color)
         caption2 = font.render("K213200 Abdur Razzaq", True, heading_color)
         caption3 = font.render("K213201 Arham Mehmood", True, heading_color)
 
