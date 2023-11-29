@@ -2,7 +2,6 @@ import pygame
 import sys
 import timeit
 from pygame.locals import *
-from eulerian import Euler_Graph
 
 width, height = 960, 720
 bg_img = pygame.image.load('image.jpg')
@@ -139,7 +138,7 @@ def open_main_window(algorithm_no):
         pygame.display.flip()  # Update the display
 
     screen = pygame.display.set_mode((width, height))
-    if algorithm_no == 1:
+    if algorithm_no==1:
         algo_title = "Eulerian's Algorithm"
     elif algorithm_no == 2:
         algo_title = "Hamiltonian's Algorithm"
@@ -152,8 +151,6 @@ def open_main_window(algorithm_no):
     all_edges = []
     edge_line = []
     edge_opt = False
-    euler_opt = False
-    euler_path = []
 
     # Rectangles to define the button areas
     reset_button_rect = pygame.Rect(width - button_width - button_margin, button_margin, button_width, button_height)
@@ -174,29 +171,7 @@ def open_main_window(algorithm_no):
         global exec_time
         s = timeit.default_timer()
         if algorithm_no == 1:
-            global eulerian_path_graph
-            vertices = []
-            eulerian_path_graph = Euler_Graph(len(points))
-            for edge in all_edges:
-                for point in points_dict:
-                    if edge[0] == point['point']:
-                        vertices.append(point['vertex'])
-                        break
-                for point in points_dict:
-                    if edge[1] == point['point']:
-                        vertices.append(point['vertex'])
-                        break
-                option = True
-                for euler_vertex in euler_path:
-                    if euler_vertex['u'] == vertices[0] and euler_vertex['v'] == vertices[1]:
-                        option = False
-                if option:
-                    eulerian_path_graph.addEdge(vertices[0],vertices[1])
-                    euler_path.append({'u':vertices[0],'v':vertices[1]})
-                vertices.clear()
-            eulerian_path_graph.printEulerTour()
-            euler_opt = True
-
+            resultant_path = resultant_path_Eulerian([point for point in points if not is_point_in_button(point)])
         elif algorithm_no == 2:
             resultant_path = resultant_path_Hamiltonian([point for point in points if not is_point_in_button(point)])
 
@@ -211,8 +186,6 @@ def open_main_window(algorithm_no):
         edge_opt = False
         all_edges.clear()
         screen.blit(bg_img,(0,0))
-        euler_opt = False
-        euler_path.clear()
 
     # Function to check if a point is inside a button, excluding the "Find Complexity" button
     def is_point_in_button(point):
@@ -227,10 +200,8 @@ def open_main_window(algorithm_no):
         # print(point1,point2)
         edge_line.append(point1)
         edge_line.append(point2)
-        if (point1,point2) not in all_edges:
-            all_edges.append((point1,point2))
-        # for edge in all_edges:
-        #     print(edge[0],edge[1])
+        # all_edges.append(edge_line)
+        # print(all_edges)
         # edge_line.clear()
         edge_opt = True
 
@@ -322,23 +293,13 @@ def open_main_window(algorithm_no):
                 option_rect = pygame.Rect(menu_2_rect.x, menu_2_rect.y + (i + 1) * menu_2_rect.height, menu_2_rect.width, menu_2_rect.height)
                 draw_list(option_rect,option)
 
-        # Draw Edges
         if edge_opt:
             for i in range(0,len(edge_line),2):
                 pygame.draw.lines(screen, line_color, True, (edge_line[i],edge_line[i+1]), 2)
 
-        # Draw Euler Path
-        if euler_path:
-            euler_line = []
-            for edge in euler_path:
-                for point in points_dict:
-                    if point['vertex'] == edge['u']:
-                        euler_line.append(point['point'])
-                for point in points_dict:
-                    if point['vertex'] == edge['v']:
-                        euler_line.append(point['point'])
-                pygame.draw.lines(screen, line_color, True, (euler_line[0],euler_line[1]), 5)
-                euler_line.clear()
+        # Draw convex hull
+        if resultant_path:
+            pygame.draw.lines(screen, line_color, True, resultant_path, 2)
 
         # Draw points and coordinates
         for point,caption in zip(points,points_dict):
