@@ -8,17 +8,17 @@ from hamiltonian import Hamilton_Graph
 width, height = 960, 720
 bg_img = pygame.image.load('image.jpg')
 bg_img = pygame.transform.scale(bg_img,(width,height))
-button_color = (0, 71, 189)
+button_color = (127, 0, 255)
 text_color = (255,255,255)
-heading_color = (56, 0, 153)
-button_border_color = heading_color
+heading_color = (255,255,255)
+button_border_color = (0, 0, 0)
 button_width = 160
 button_height = 30
 button_margin = 15
 point_color = (30, 0, 255)
 point_bg_color = (255,255,255)
 coord_color = (56, 0, 153)
-line_color = (0,30,255)
+line_color = (0,0,0)
 line_width = 1
 point_radius = 8
 font_size = 24
@@ -162,7 +162,7 @@ def open_main_window(algorithm_no):
     reset_button_rect = pygame.Rect(width - button_width - button_margin, button_margin, button_width, button_height)
     resultant_path_button_rect = pygame.Rect(width - button_width - button_margin, button_margin * 2 + button_height, button_width, button_height)
     back_button_rect = pygame.Rect(width - button_width - button_margin, height - button_height - button_margin, button_width, button_height)
-    edge_rect = pygame.Rect(width // 2 - button_width // 2 + 400, height // 2 - button_height // 2, button_width, button_height)
+    edge_rect = pygame.Rect(button_margin * 2 + 430, button_margin * 2 + 30, button_width, button_height)
 
     # Function to draw a point
     def draw_point(x, y, caption, color=point_color):
@@ -324,7 +324,7 @@ def open_main_window(algorithm_no):
         draw_button(back_button_rect, "Back", sub_menu)
 
         # Dropdown
-        menu_1_rect = pygame.Rect(width // 2 - button_width // 2, height // 2 - button_height // 2, button_width, button_height)
+        menu_1_rect = pygame.Rect(button_margin * 2 + 30, button_margin * 2 + 30, button_width, button_height)
         # draw_list(menu_1_rect,'Vertex A')
         if first_selection is not None:
             draw_list(menu_1_rect,first_selection)
@@ -334,9 +334,8 @@ def open_main_window(algorithm_no):
             for i, option in enumerate(menu_1_options):
                 option_rect = pygame.Rect(menu_1_rect.x, menu_1_rect.y + (i + 1) * menu_1_rect.height, menu_1_rect.width, menu_1_rect.height)
                 draw_list(option_rect,option)
-                menu_1_rect = pygame.Rect(width // 2 - button_width // 2, height // 2 - button_height // 2, button_width, button_height)
         
-        menu_2_rect = pygame.Rect(width // 2 - button_width // 2 + 200, height // 2 - button_height // 2, button_width, button_height)
+        menu_2_rect = pygame.Rect(button_margin * 2 + 230, button_margin * 2 + 30, button_width, button_height)
         if second_selection is not None:
             draw_list(menu_2_rect,second_selection)
         else:
@@ -349,7 +348,7 @@ def open_main_window(algorithm_no):
         # Draw Edges
         if edge_opt:
             for i in range(0,len(edge_line),2):
-                pygame.draw.lines(screen, line_color, True, (edge_line[i],edge_line[i+1]), 2)
+                pygame.draw.lines(screen, line_color, True, (edge_line[i],edge_line[i+1]), 4)
 
         # Draw Euler Path
         if euler_path:
