@@ -362,23 +362,23 @@ def open_main_window(algorithm_no):
                         euler_line.append(point['point'])
                 pygame.draw.lines(screen, (250,0,0), True, (euler_line[0],euler_line[1]), 5)
                 euler_line.clear()
-                status = f'{euler_path}'
+                status = f'{eulerian_path_graph.path}'
                 result = pygame.font.Font(None, font_size)
                 text = result.render(status, True, heading_color)
                 text_rect = text.get_rect(center=((width // 2) - 160, height // 10 + 500))
                 screen.blit(text, text_rect)
-        if len(euler_path) == len(all_edges) and len(all_edges)!=0 and len(euler_path)!=0:
-            status = "Euler Path Exist"
-            result = pygame.font.Font(None, font_size)
-            text = result.render(status, True, heading_color)
-            text_rect = text.get_rect(center=((width // 2) - 160, height // 10 + 50))
-            screen.blit(text, text_rect)
-        elif len(euler_path) != len(all_edges) and len(all_edges)!=0 and len(euler_path)!=0:
-            status = "Euler Path Exist"
-            result = pygame.font.Font(None, font_size)
-            text = result.render(status, True, heading_color)
-            text_rect = text.get_rect(center=((width // 2) - 160, height // 10 + 50))
-            screen.blit(text, text_rect)
+            if len(eulerian_path_graph.path) == len(all_edges) and len(all_edges)!=0 and len(euler_path)!=0:
+                status = "Euler Path Exist"
+                result = pygame.font.Font(None, font_size)
+                text = result.render(status, True, heading_color)
+                text_rect = text.get_rect(center=((width // 2) - 160, height // 10 + 50))
+                screen.blit(text, text_rect)
+            elif len(eulerian_path_graph.path) != len(all_edges) and len(all_edges)!=0 and len(euler_path)!=0:
+                status = "Euler Path Donot Exist"
+                result = pygame.font.Font(None, font_size)
+                text = result.render(status, True, heading_color)
+                text_rect = text.get_rect(center=((width // 2) - 160, height // 10 + 50))
+                screen.blit(text, text_rect)
 
         if hamilton_path:
             hamilton_line = []
@@ -386,11 +386,27 @@ def open_main_window(algorithm_no):
                 for point in points_dict:
                     if point['vertex'] == hamiltonian_path_graph.result[i]:
                         hamilton_line.append(point['point'])
-            
+                status = f'{hamiltonian_path_graph.result}'
+                result = pygame.font.Font(None, font_size)
+                text = result.render(status, True, heading_color)
+                text_rect = text.get_rect(center=((width // 2) - 160, height // 10 + 500))
+                screen.blit(text, text_rect)
             for i in range(len(hamilton_line)):
-                print(i,len(hamilton_line))
                 if i != (len(hamilton_line)-1):
                     pygame.draw.lines(screen, (250,0,0), True, (hamilton_line[i],hamilton_line[i+1]), 5)
+            print(len(hamiltonian_path_graph.result),len(points))
+            if len(hamiltonian_path_graph.result) == len(points) and len(points)!=0 and len(points)!=0:
+                status = "Hamilton Path Exist"
+                result = pygame.font.Font(None, font_size)
+                text = result.render(status, True, heading_color)
+                text_rect = text.get_rect(center=((width // 2) - 160, height // 10 + 50))
+                screen.blit(text, text_rect)
+            elif len(hamiltonian_path_graph.result) != len(points) and len(points)!=0 and len(points)!=0:
+                status = "Hamilton Path Donot Exist"
+                result = pygame.font.Font(None, font_size)
+                text = result.render(status, True, heading_color)
+                text_rect = text.get_rect(center=((width // 2) - 160, height // 10 + 50))
+                screen.blit(text, text_rect)
 
         # Draw points and coordinates
         for point,caption in zip(points,points_dict):
