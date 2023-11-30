@@ -362,6 +362,18 @@ def open_main_window(algorithm_no):
                         euler_line.append(point['point'])
                 pygame.draw.lines(screen, (250,0,0), True, (euler_line[0],euler_line[1]), 5)
                 euler_line.clear()
+        if len(euler_path) == len(all_edges) and len(all_edges)!=0 and len(euler_path)!=0:
+            intersection_status = "Euler Path Exist"
+            result = pygame.font.Font(None, font_size)
+            text = result.render(intersection_status, True, heading_color)
+            text_rect = text.get_rect(center=((width // 2) - 160, height // 10 + 50))
+            screen.blit(text, text_rect)
+        elif len(euler_path) != len(all_edges) and len(all_edges)!=0 and len(euler_path)!=0:
+            intersection_status = "Euler Path Exist"
+            result = pygame.font.Font(None, font_size)
+            text = result.render(intersection_status, True, heading_color)
+            text_rect = text.get_rect(center=((width // 2) - 160, height // 10 + 50))
+            screen.blit(text, text_rect)
 
         if hamilton_path:
             hamilton_line = []
