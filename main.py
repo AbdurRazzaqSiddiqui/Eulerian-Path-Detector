@@ -12,8 +12,8 @@ button_color = (127, 0, 255)
 text_color = (255,255,255)
 heading_color = (255,255,255)
 button_border_color = (0, 0, 0)
-button_width = 160
-button_height = 30
+button_width = 180
+button_height = 35
 button_margin = 15
 point_color = (30, 0, 255)
 point_bg_color = (255,255,255)
@@ -31,7 +31,7 @@ pygame.display.set_caption("Minimum Spanning Tree - Menu")
 
 def draw_button(rect, text, callback):
     pygame.draw.rect(menu_screen, button_color, rect)
-    pygame.draw.rect(menu_screen, button_border_color, rect, 5)  # Draw the border
+    pygame.draw.rect(menu_screen, button_border_color, rect, 3)  # Draw the border
     text_surface = small_font.render(text, True, text_color)
     text_rect = text_surface.get_rect(center=rect.center)
     menu_screen.blit(text_surface, text_rect)
@@ -41,7 +41,7 @@ def draw_button(rect, text, callback):
 
 def draw_list(rect, text):
     pygame.draw.rect(menu_screen, button_color, rect)
-    pygame.draw.rect(menu_screen, button_border_color, rect, 5)  # Draw the border
+    pygame.draw.rect(menu_screen, button_border_color, rect, 3)  # Draw the border
     text_surface = small_font.render(text, True, text_color)
     # coords_text = small_font.render(f'({x},{y})', True, coord_color)
     text_rect = text_surface.get_rect(center=rect.center)
@@ -406,7 +406,7 @@ def main_menu():
         title_rect = title_text.get_rect(center=(width // 2, 15 + title_text.get_height() // 2))
         menu_screen.blit(title_text, title_rect)
 
-        resultant_path_button_rect = pygame.Rect(width//2 - 80, height//2 - 100, 160, 40)  # Create the convex button rect
+        resultant_path_button_rect = pygame.Rect(width//2 - 80, height//2 - 100, button_width, button_height)  # Create the convex button rect
         draw_button(resultant_path_button_rect, "Path Detector", sub_menu)
 
         about_button_rect = pygame.Rect(width - button_width - button_margin, button_margin * 2 - 15, button_width, button_height)
